@@ -1,6 +1,6 @@
-package com.kmt.lld;
+package com.kmt.lld.parkinglot;
 
-public class Main {
+public class ParkingLotApp {
     public static void main(String[] args) {
         System.out.println("Hello world!");
     }
