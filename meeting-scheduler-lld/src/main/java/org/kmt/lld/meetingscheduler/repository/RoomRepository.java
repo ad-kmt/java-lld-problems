@@ -1,5 +1,7 @@
 package org.kmt.lld.meetingscheduler.repository;
 
+import org.kmt.lld.meetingscheduler.exceptions.repository.MeetingNotFoundException;
+import org.kmt.lld.meetingscheduler.exceptions.repository.RoomNotFoundException;
 import org.kmt.lld.meetingscheduler.models.Room;
 
 import java.util.HashMap;
@@ -24,6 +26,9 @@ public class RoomRepository {
     }
 
     public Room getRoomById(int roomId) {
+        if (!rooms.containsKey(roomId)) {
+            throw new RoomNotFoundException("Room not found");
+        }
         return rooms.get(roomId);
     }
 }

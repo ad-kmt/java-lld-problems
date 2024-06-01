@@ -1,6 +1,6 @@
 package org.kmt.lld.meetingscheduler.repository;
 
-import org.kmt.lld.meetingscheduler.exceptions.MeetingNotFoundException;
+import org.kmt.lld.meetingscheduler.exceptions.repository.MeetingNotFoundException;
 import org.kmt.lld.meetingscheduler.models.Meeting;
 
 import java.util.ArrayList;
@@ -40,10 +40,16 @@ public class MeetingRepository {
     }
 
     public Meeting getMeetingById(int meetingId) {
+        if (!meetings.containsKey(meetingId)) {
+            throw new MeetingNotFoundException("Meeting not found");
+        }
         return meetings.get(meetingId);
     }
 
     public void deleteMeeting(int meetingId) {
+        if (!meetings.containsKey(meetingId)) {
+            throw new MeetingNotFoundException("Meeting not found");
+        }
         meetings.remove(meetingId);
     }
 }

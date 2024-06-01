@@ -1,4 +1,4 @@
-package org.kmt.lld.meetingscheduler.exceptions.meetingscheduler;
+package org.kmt.lld.meetingscheduler.exceptions.service;
 
 public class MeetingOverlapException extends MeetingSchedulerException {
 

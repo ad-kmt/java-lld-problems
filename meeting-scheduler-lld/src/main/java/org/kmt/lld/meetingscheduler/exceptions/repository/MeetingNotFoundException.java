@@ -1,4 +1,4 @@
-package org.kmt.lld.meetingscheduler.exceptions;
+package org.kmt.lld.meetingscheduler.exceptions.repository;
 
 public class MeetingNotFoundException extends RuntimeException{
 

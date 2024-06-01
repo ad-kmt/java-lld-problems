@@ -1,8 +1,8 @@
 package org.kmt.lld.meetingscheduler.service;
 
-import org.kmt.lld.meetingscheduler.exceptions.ParticipantNotFoundException;
-import org.kmt.lld.meetingscheduler.exceptions.meetingscheduler.MeetingOverlapException;
-import org.kmt.lld.meetingscheduler.exceptions.meetingscheduler.MeetingRoomCapacityLimitException;
+import org.kmt.lld.meetingscheduler.exceptions.service.ParticipantNotFoundException;
+import org.kmt.lld.meetingscheduler.exceptions.service.MeetingOverlapException;
+import org.kmt.lld.meetingscheduler.exceptions.service.MeetingRoomCapacityLimitException;
 import org.kmt.lld.meetingscheduler.models.Interval;
 import org.kmt.lld.meetingscheduler.models.Meeting;
 import org.kmt.lld.meetingscheduler.models.Room;
@@ -90,19 +90,21 @@ public class MeetingSchedulerService {
     /**
      * Responds to a meeting invitation.
      */
-    public void respondToInvitation(User participant, Meeting.InviteResponse inviteResponse, Meeting meeting) {
+    public void respondToInvitation(User participant, Meeting.InviteResponse inviteResponse, int meetingId) {
+        Meeting meeting = meetingRepository.getMeetingById(meetingId);
 
         Stream<User> participantStream = meeting.getInvites().stream().map(Meeting.Invite::getParticipant);
 
-        if(participantStream.noneMatch(p -> p.getEmail().equals(participant.getEmail()))) {
+        if (participantStream.noneMatch(p -> p.getEmail().equals(participant.getEmail()))) {
             throw new ParticipantNotFoundException("Participant not part of the meeting");
         }
 
-        for(Meeting.Invite invite : meeting.getInvites()){
-            if(invite.getParticipant().getEmail().equals(participant.getEmail())){
+        for (Meeting.Invite invite : meeting.getInvites()) {
+            if (invite.getParticipant().getEmail().equals(participant.getEmail())) {
                 invite.setInviteStatus(inviteResponse);
             }
         }
+
         meetingRepository.update(meeting);
         System.out.printf("Response: %s set for participant: %s for meeting: %s%n", inviteResponse, participant, meeting);
     }

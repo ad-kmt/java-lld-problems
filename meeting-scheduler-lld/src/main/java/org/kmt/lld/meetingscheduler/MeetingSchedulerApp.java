@@ -1,6 +1,6 @@
 package org.kmt.lld.meetingscheduler;
 
-import org.kmt.lld.meetingscheduler.exceptions.meetingscheduler.MeetingSchedulerException;
+import org.kmt.lld.meetingscheduler.exceptions.service.MeetingSchedulerException;
 import org.kmt.lld.meetingscheduler.models.Interval;
 import org.kmt.lld.meetingscheduler.models.Meeting;
 import org.kmt.lld.meetingscheduler.models.Room;
@@ -56,7 +56,7 @@ public class MeetingSchedulerApp {
         Meeting meeting = meetingSchedulerService.scheduleMeeting(new Meeting("Meeting 1", startTime, endTime, room1, user1, user2, user3, user4));
 
         // Respond to invitation
-        meetingSchedulerService.respondToInvitation(user2, Meeting.InviteResponse.ACCEPTED, meeting);
+        meetingSchedulerService.respondToInvitation(user2, Meeting.InviteResponse.ACCEPTED, meeting.getId());
         System.out.println("Meeting invitation status: " + meeting.getInvites());
 
         // Attempt to schedule another meeting at the same time in the same room

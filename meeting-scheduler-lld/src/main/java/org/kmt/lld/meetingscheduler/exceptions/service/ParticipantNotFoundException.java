@@ -1,4 +1,4 @@
-package org.kmt.lld.meetingscheduler.exceptions;
+package org.kmt.lld.meetingscheduler.exceptions.service;
 
 public class ParticipantNotFoundException extends RuntimeException{
 
