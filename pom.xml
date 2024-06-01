@@ -9,13 +9,20 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.kmt.lld</groupId>
-    <artifactId>parking-lot-lld</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>javaAuthDemo</name>
-    <description>Demo project for Parking Lot LLD</description>
+    <artifactId>java-lld-problems</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>Java Low Level Design Problems</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>meeting-scheduler-lld</module>
+        <module>parking-lot-lld</module>
+    </modules>
+
     <properties>
         <java.version>17</java.version>
     </properties>
+
 
     <dependencies>
         <dependency>
