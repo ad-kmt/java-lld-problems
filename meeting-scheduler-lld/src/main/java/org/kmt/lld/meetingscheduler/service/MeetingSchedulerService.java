@@ -1,12 +1,13 @@
 package org.kmt.lld.meetingscheduler.service;
 
-import org.kmt.lld.meetingscheduler.exceptions.service.ParticipantNotFoundException;
 import org.kmt.lld.meetingscheduler.exceptions.service.MeetingOverlapException;
 import org.kmt.lld.meetingscheduler.exceptions.service.MeetingRoomCapacityLimitException;
+import org.kmt.lld.meetingscheduler.exceptions.service.ParticipantNotFoundException;
 import org.kmt.lld.meetingscheduler.models.*;
 import org.kmt.lld.meetingscheduler.models.enums.InviteResponse;
 import org.kmt.lld.meetingscheduler.repository.MeetingRepository;
 import org.kmt.lld.meetingscheduler.repository.RoomRepository;
+import org.kmt.lld.meetingscheduler.service.notification.NotificationService;
 import org.kmt.lld.meetingscheduler.utils.Logger;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class MeetingSchedulerService {
 
     public NotificationService notificationService;
 
-    public MeetingSchedulerService(MeetingRepository meetingRepository, RoomRepository roomRepository, NotificationService notificationService){
+    public MeetingSchedulerService(MeetingRepository meetingRepository, RoomRepository roomRepository, NotificationService notificationService) {
         this.meetingRepository = meetingRepository;
         this.roomRepository = roomRepository;
         this.notificationService = notificationService;
@@ -48,11 +49,16 @@ public class MeetingSchedulerService {
         Meeting meeting = meetingRepository.create(meetingRequest);
         log.info("Meeting created: " + meetingRequest);
 
-        notificationService.sendNotification(
-                meeting.getInvites().stream().map(Invite::getParticipant).toList(),
-                String.format("You're invited to %s by %s", meeting.getTitle(), meeting.getOrganizer().getName())
-        );
-
+        // Sending notifications to all participants
+        meeting.getInvites().stream()
+                .map(Invite::getParticipant)
+                .toList()
+                .forEach(
+                        user -> notificationService.sendNotificationOverAllChannels(
+                                user,
+                                String.format("You're invited to %s by %s", meeting.getTitle(), meeting.getOrganizer().getName())
+                        )
+                );
         log.info("Notification sent to all participants.");
         return meeting;
     }
@@ -60,7 +66,7 @@ public class MeetingSchedulerService {
     /**
      * Checks if the requested meeting time is available.
      */
-    public boolean checkAvailability(Meeting meetingRequest){
+    public boolean checkAvailability(Meeting meetingRequest) {
         return meetingRepository.getAllMeetings().stream()
                 .filter(existingMeeting -> existingMeeting.getRoom().getId() == meetingRequest.getRoom().getId())
                 .noneMatch(existingMeeting -> isOverlapping(existingMeeting.getInterval(), meetingRequest.getInterval()));
@@ -83,7 +89,7 @@ public class MeetingSchedulerService {
     /**
      * Checks if two intervals overlap.
      */
-    public boolean isOverlapping(Interval A, Interval B){
+    public boolean isOverlapping(Interval A, Interval B) {
         return !(A.getEndTime().isBefore(B.getStartTime()) || B.getEndTime().isBefore(A.getStartTime()));
     }
 

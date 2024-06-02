@@ -11,8 +11,11 @@ import org.kmt.lld.meetingscheduler.repository.RoomRepository;
 import org.kmt.lld.meetingscheduler.repository.UserRepository;
 import org.kmt.lld.meetingscheduler.service.MeetingRoomService;
 import org.kmt.lld.meetingscheduler.service.MeetingSchedulerService;
-import org.kmt.lld.meetingscheduler.service.NotificationService;
+import org.kmt.lld.meetingscheduler.service.notification.NotificationService;
 import org.kmt.lld.meetingscheduler.service.UserService;
+import org.kmt.lld.meetingscheduler.service.notification.sender.EmailNotificationSenderImpl;
+import org.kmt.lld.meetingscheduler.service.notification.sender.NotificationSenderFactory;
+import org.kmt.lld.meetingscheduler.service.notification.sender.SmsNotificationSenderImpl;
 import org.kmt.lld.meetingscheduler.utils.Logger;
 
 import java.time.LocalDateTime;
@@ -32,7 +35,8 @@ public class MeetingSchedulerApp {
         UserRepository userRepository = new UserRepository();
 
         // Initialize services
-        NotificationService notificationService = new NotificationService();
+        NotificationSenderFactory notificationSenderFactory = new NotificationSenderFactory(new SmsNotificationSenderImpl(), new EmailNotificationSenderImpl());
+        NotificationService notificationService = new NotificationService(notificationSenderFactory);
         MeetingRoomService meetingRoomService = new MeetingRoomService(roomRepository);
         MeetingSchedulerService meetingSchedulerService = new MeetingSchedulerService(meetingRepository, roomRepository, notificationService);
         UserService userService = new UserService(userRepository);

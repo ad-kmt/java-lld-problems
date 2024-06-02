@@ -1,4 +1,6 @@
-package org.kmt.lld.meetingscheduler.models;
+package org.kmt.lld.meetingscheduler.models.notification;
+
+import org.kmt.lld.meetingscheduler.models.User;
 
 import java.time.LocalDateTime;
 
