@@ -111,11 +111,12 @@ public class MeetingSchedulerService {
         }
 
         meetingRepository.update(meeting);
+        log.info(String.format("Response: %s set for participant: %s for meeting: %s", inviteResponse, participant, meeting));
+
         // Send creation event to all subscribers
         for(MeetingEventsSubscriber meetingEventsSubscriber: meetingEventsSubscribers){
             meetingEventsSubscriber.userResponseEvent(meeting, participant, inviteResponse);
         }
-        log.info(String.format("Response: %s set for participant: %s for meeting: %s", inviteResponse, participant, meeting));
         log.info("Participant response event sent to all subscribers.");
     }
 

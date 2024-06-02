@@ -25,7 +25,7 @@ public class MeetingNotificationService implements MeetingEventsSubscriber {
                     notificationService.sendNotificationOverAllChannels(notification);
                 });
 
-        Notification organizerNotification = new Notification(meeting.getOrganizer(), String.format("You've created meeting: %s", meeting.getOrganizer().getName()));
+        Notification organizerNotification = new Notification(meeting.getOrganizer(), String.format("You've created meeting: %s", meeting.getTitle()));
         notificationService.sendNotificationOverAllChannels(organizerNotification);
     }
 

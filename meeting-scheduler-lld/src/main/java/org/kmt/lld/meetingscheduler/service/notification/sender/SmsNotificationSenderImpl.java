@@ -8,6 +8,6 @@ public class SmsNotificationSenderImpl implements NotificationSender {
 
     @Override
     public void send(Notification notification) {
-        log.info("Sent sms: " + notification.getMessage() + " to user: " + notification.getRecipient().getName());
+        log.info(String.format("Sent SMS to user - %s: [%s]", notification.getRecipient().getName(), notification.getMessage()));
     }
 }

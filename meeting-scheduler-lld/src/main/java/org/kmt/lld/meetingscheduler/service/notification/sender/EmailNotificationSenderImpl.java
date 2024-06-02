@@ -17,6 +17,6 @@ public class EmailNotificationSenderImpl implements NotificationSender {
     @Override
     public void send(Notification notification) {
         // Log the message indicating that an email has been sent
-        log.info("Sent Email: " + notification.getMessage() + " to user: " + notification.getRecipient().getEmail());
+        log.info(String.format("Sent Email to user - %s: [%s]", notification.getRecipient().getEmail(), notification.getMessage()));
     }
 }
