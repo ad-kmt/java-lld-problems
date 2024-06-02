@@ -5,6 +5,7 @@ import org.kmt.lld.meetingscheduler.models.Interval;
 import org.kmt.lld.meetingscheduler.models.Meeting;
 import org.kmt.lld.meetingscheduler.models.Room;
 import org.kmt.lld.meetingscheduler.models.User;
+import org.kmt.lld.meetingscheduler.models.enums.InviteResponse;
 import org.kmt.lld.meetingscheduler.repository.MeetingRepository;
 import org.kmt.lld.meetingscheduler.repository.RoomRepository;
 import org.kmt.lld.meetingscheduler.repository.UserRepository;
@@ -60,7 +61,7 @@ public class MeetingSchedulerApp {
         Meeting meeting = meetingSchedulerService.scheduleMeeting(new Meeting("Meeting 1", startTime, endTime, room1, user1, user2, user3, user4));
 
         // Respond to invitation
-        meetingSchedulerService.respondToInvitation(user2, Meeting.InviteResponse.ACCEPTED, meeting.getId());
+        meetingSchedulerService.respondToInvitation(user2, InviteResponse.ACCEPTED, meeting.getId());
         log.info("Meeting invitation status: " + meeting.getInvites());
 
         // Attempt to schedule another meeting at the same time in the same room

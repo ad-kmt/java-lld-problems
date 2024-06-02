@@ -3,10 +3,8 @@ package org.kmt.lld.meetingscheduler.service;
 import org.kmt.lld.meetingscheduler.exceptions.service.ParticipantNotFoundException;
 import org.kmt.lld.meetingscheduler.exceptions.service.MeetingOverlapException;
 import org.kmt.lld.meetingscheduler.exceptions.service.MeetingRoomCapacityLimitException;
-import org.kmt.lld.meetingscheduler.models.Interval;
-import org.kmt.lld.meetingscheduler.models.Meeting;
-import org.kmt.lld.meetingscheduler.models.Room;
-import org.kmt.lld.meetingscheduler.models.User;
+import org.kmt.lld.meetingscheduler.models.*;
+import org.kmt.lld.meetingscheduler.models.enums.InviteResponse;
 import org.kmt.lld.meetingscheduler.repository.MeetingRepository;
 import org.kmt.lld.meetingscheduler.repository.RoomRepository;
 import org.kmt.lld.meetingscheduler.utils.Logger;
@@ -51,7 +49,7 @@ public class MeetingSchedulerService {
         log.info("Meeting created: " + meetingRequest);
 
         notificationService.sendNotification(
-                meeting.getInvites().stream().map(Meeting.Invite::getParticipant).toList(),
+                meeting.getInvites().stream().map(Invite::getParticipant).toList(),
                 String.format("You're invited to %s by %s", meeting.getTitle(), meeting.getOrganizer().getName())
         );
 
@@ -92,16 +90,16 @@ public class MeetingSchedulerService {
     /**
      * Responds to a meeting invitation.
      */
-    public void respondToInvitation(User participant, Meeting.InviteResponse inviteResponse, int meetingId) {
+    public void respondToInvitation(User participant, InviteResponse inviteResponse, int meetingId) {
         Meeting meeting = meetingRepository.getMeetingById(meetingId);
 
-        Stream<User> participantStream = meeting.getInvites().stream().map(Meeting.Invite::getParticipant);
+        Stream<User> participantStream = meeting.getInvites().stream().map(Invite::getParticipant);
 
         if (participantStream.noneMatch(p -> p.getEmail().equals(participant.getEmail()))) {
             throw new ParticipantNotFoundException("Participant not part of the meeting");
         }
 
-        for (Meeting.Invite invite : meeting.getInvites()) {
+        for (Invite invite : meeting.getInvites()) {
             if (invite.getParticipant().getEmail().equals(participant.getEmail())) {
                 invite.setInviteStatus(inviteResponse);
             }
