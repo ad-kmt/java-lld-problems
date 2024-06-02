@@ -6,6 +6,7 @@ import org.kmt.lld.meetingscheduler.models.enums.InviteResponse;
 import org.kmt.lld.meetingscheduler.repository.MeetingRepository;
 import org.kmt.lld.meetingscheduler.repository.RoomRepository;
 import org.kmt.lld.meetingscheduler.repository.UserRepository;
+import org.kmt.lld.meetingscheduler.service.meeting.MeetingNotificationService;
 import org.kmt.lld.meetingscheduler.service.meeting.MeetingRoomService;
 import org.kmt.lld.meetingscheduler.service.meeting.MeetingSchedulerService;
 import org.kmt.lld.meetingscheduler.service.meeting.strategy.FindMeetingStrategy;
@@ -38,7 +39,8 @@ public class MeetingSchedulerApp {
         NotificationService notificationService = new NotificationService(notificationSenderFactory);
         MeetingRoomService meetingRoomService = new MeetingRoomService(roomRepository);
         FindMeetingStrategy findMeetingStrategy = new FirstAvailableSlotStrategy(meetingRepository, roomRepository);
-        MeetingSchedulerService meetingSchedulerService = new MeetingSchedulerService(meetingRepository, roomRepository, notificationService);
+        MeetingNotificationService meetingNotificationService = new MeetingNotificationService(notificationService);
+        MeetingSchedulerService meetingSchedulerService = new MeetingSchedulerService(meetingRepository, roomRepository, meetingNotificationService);
         UserService userService = new UserService(userRepository);
 
         log.info("Meeting Scheduler App Started!");
@@ -64,7 +66,6 @@ public class MeetingSchedulerApp {
         LocalDateTime endTime = LocalDateTime.of(2024, 6, 5, 12, 30);
 
         Meeting meeting1 = meetingSchedulerService.scheduleMeeting(new Meeting("Meeting 1", startTime, endTime, room1, user1, user2, user3, user4));
-
 
         // Respond to invitation
         meetingSchedulerService.respondToInvitation(user2, InviteResponse.ACCEPTED, meeting1.getId());

@@ -5,13 +5,13 @@ import org.kmt.lld.meetingscheduler.exceptions.service.MeetingRoomCapacityLimitE
 import org.kmt.lld.meetingscheduler.exceptions.service.ParticipantNotFoundException;
 import org.kmt.lld.meetingscheduler.models.*;
 import org.kmt.lld.meetingscheduler.models.enums.InviteResponse;
-import org.kmt.lld.meetingscheduler.models.notification.Notification;
 import org.kmt.lld.meetingscheduler.repository.MeetingRepository;
 import org.kmt.lld.meetingscheduler.repository.RoomRepository;
-import org.kmt.lld.meetingscheduler.service.meeting.strategy.FindMeetingStrategy;
-import org.kmt.lld.meetingscheduler.service.notification.NotificationService;
+import org.kmt.lld.meetingscheduler.service.meeting.observer.MeetingEventsSubscriber;
 import org.kmt.lld.meetingscheduler.utils.Logger;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,13 +25,14 @@ public class MeetingSchedulerService {
     public Logger log = Logger.getInstance();
     public MeetingRepository meetingRepository;
     public RoomRepository roomRepository;
-    public NotificationService notificationService;
+    public List<MeetingEventsSubscriber> meetingEventsSubscribers;
 
 
-    public MeetingSchedulerService(MeetingRepository meetingRepository, RoomRepository roomRepository, NotificationService notificationService) {
+    public MeetingSchedulerService(MeetingRepository meetingRepository, RoomRepository roomRepository, MeetingEventsSubscriber... meetingEventsSubscribers) {
         this.meetingRepository = meetingRepository;
         this.roomRepository = roomRepository;
-        this.notificationService = notificationService;
+        this.meetingEventsSubscribers = new ArrayList<>();
+        this.meetingEventsSubscribers.addAll(Arrays.asList(meetingEventsSubscribers));
     }
 
 
@@ -53,14 +54,11 @@ public class MeetingSchedulerService {
         Meeting meeting = meetingRepository.create(meetingRequest);
         log.info("Meeting created: " + meetingRequest);
 
-        // Sending notifications to all participants
-        meeting.getInvites().stream()
-                .map(Invite::getParticipant)
-                .map(user -> new Notification(
-                        user,
-                        String.format("You're invited to %s by %s", meeting.getTitle(), meeting.getOrganizer().getName())))
-                .forEach(notification -> notificationService.sendNotificationOverAllChannels(notification));
-        log.info("Notification sent to all participants.");
+        // Send creation event to all subscribers
+        for(MeetingEventsSubscriber meetingEventsSubscriber: meetingEventsSubscribers){
+            meetingEventsSubscriber.creationEvent(meeting);
+        }
+        log.info("Meeting creation event sent to all subscribers.");
         return meeting;
     }
 
@@ -113,8 +111,15 @@ public class MeetingSchedulerService {
         }
 
         meetingRepository.update(meeting);
+        // Send creation event to all subscribers
+        for(MeetingEventsSubscriber meetingEventsSubscriber: meetingEventsSubscribers){
+            meetingEventsSubscriber.userResponseEvent(meeting, participant, inviteResponse);
+        }
         log.info(String.format("Response: %s set for participant: %s for meeting: %s", inviteResponse, participant, meeting));
+        log.info("Participant response event sent to all subscribers.");
     }
+
+
 
 
 }
