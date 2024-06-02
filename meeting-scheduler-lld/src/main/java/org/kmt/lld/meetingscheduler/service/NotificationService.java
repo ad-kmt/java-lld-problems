@@ -2,6 +2,7 @@ package org.kmt.lld.meetingscheduler.service;
 
 import org.kmt.lld.meetingscheduler.models.Notification;
 import org.kmt.lld.meetingscheduler.models.User;
+import org.kmt.lld.meetingscheduler.utils.Logger;
 
 import java.util.List;
 
@@ -10,12 +11,14 @@ import java.util.List;
  */
 public class NotificationService {
 
+    Logger log = Logger.getInstance();
+
     /**
      * Sends a notification to a single user with the specified message.
      */
     public void sendNotification(User user, String message) {
         Notification notification = new Notification(user, message);
-        System.out.println("Sent notification: " + notification + " to user: " + user.getEmail());
+        log.info("Sent notification: " + notification + " to user: " + user.getEmail());
     }
 
     /**

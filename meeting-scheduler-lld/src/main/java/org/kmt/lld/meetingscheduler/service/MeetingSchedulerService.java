@@ -9,6 +9,7 @@ import org.kmt.lld.meetingscheduler.models.Room;
 import org.kmt.lld.meetingscheduler.models.User;
 import org.kmt.lld.meetingscheduler.repository.MeetingRepository;
 import org.kmt.lld.meetingscheduler.repository.RoomRepository;
+import org.kmt.lld.meetingscheduler.utils.Logger;
 
 import java.util.List;
 import java.util.Set;
@@ -20,6 +21,7 @@ import java.util.stream.Stream;
  */
 public class MeetingSchedulerService {
 
+    public Logger log = Logger.getInstance();
     public MeetingRepository meetingRepository;
     public RoomRepository roomRepository;
 
@@ -46,14 +48,14 @@ public class MeetingSchedulerService {
         }
 
         Meeting meeting = meetingRepository.create(meetingRequest);
-        System.out.println("Meeting created: " + meetingRequest);
+        log.info("Meeting created: " + meetingRequest);
 
         notificationService.sendNotification(
                 meeting.getInvites().stream().map(Meeting.Invite::getParticipant).toList(),
                 String.format("You're invited to %s by %s", meeting.getTitle(), meeting.getOrganizer().getName())
         );
 
-        System.out.println("Notification sent to all participants.");
+        log.info("Notification sent to all participants.");
         return meeting;
     }
 
@@ -106,7 +108,7 @@ public class MeetingSchedulerService {
         }
 
         meetingRepository.update(meeting);
-        System.out.printf("Response: %s set for participant: %s for meeting: %s%n", inviteResponse, participant, meeting);
+        log.info(String.format("Response: %s set for participant: %s for meeting: %s", inviteResponse, participant, meeting));
     }
 
 
