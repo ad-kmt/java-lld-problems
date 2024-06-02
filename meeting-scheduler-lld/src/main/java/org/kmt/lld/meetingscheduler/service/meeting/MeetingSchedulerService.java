@@ -1,4 +1,4 @@
-package org.kmt.lld.meetingscheduler.service;
+package org.kmt.lld.meetingscheduler.service.meeting;
 
 import org.kmt.lld.meetingscheduler.exceptions.service.MeetingOverlapException;
 import org.kmt.lld.meetingscheduler.exceptions.service.MeetingRoomCapacityLimitException;
@@ -8,6 +8,7 @@ import org.kmt.lld.meetingscheduler.models.enums.InviteResponse;
 import org.kmt.lld.meetingscheduler.models.notification.Notification;
 import org.kmt.lld.meetingscheduler.repository.MeetingRepository;
 import org.kmt.lld.meetingscheduler.repository.RoomRepository;
+import org.kmt.lld.meetingscheduler.service.meeting.strategy.FindMeetingStrategy;
 import org.kmt.lld.meetingscheduler.service.notification.NotificationService;
 import org.kmt.lld.meetingscheduler.utils.Logger;
 
@@ -24,14 +25,16 @@ public class MeetingSchedulerService {
     public Logger log = Logger.getInstance();
     public MeetingRepository meetingRepository;
     public RoomRepository roomRepository;
-
     public NotificationService notificationService;
+
 
     public MeetingSchedulerService(MeetingRepository meetingRepository, RoomRepository roomRepository, NotificationService notificationService) {
         this.meetingRepository = meetingRepository;
         this.roomRepository = roomRepository;
         this.notificationService = notificationService;
     }
+
+
 
     /**
      * Schedules a new meeting if the room capacity and availability checks pass.

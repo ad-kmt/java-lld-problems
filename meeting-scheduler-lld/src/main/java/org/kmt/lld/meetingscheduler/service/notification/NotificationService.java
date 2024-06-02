@@ -2,12 +2,9 @@ package org.kmt.lld.meetingscheduler.service.notification;
 
 import org.kmt.lld.meetingscheduler.models.enums.NotificationType;
 import org.kmt.lld.meetingscheduler.models.notification.Notification;
-import org.kmt.lld.meetingscheduler.models.User;
 import org.kmt.lld.meetingscheduler.service.notification.sender.NotificationSender;
 import org.kmt.lld.meetingscheduler.service.notification.sender.NotificationSenderFactory;
 import org.kmt.lld.meetingscheduler.utils.Logger;
-
-import java.util.List;
 
 /**
  * Service class for sending notifications to users.
@@ -21,7 +18,7 @@ public class NotificationService {
     NotificationSenderFactory notificationSenderFactory;
 
 
-    public NotificationService(NotificationSenderFactory notificationSenderFactory){
+    public NotificationService(NotificationSenderFactory notificationSenderFactory) {
         this.notificationSenderFactory = notificationSenderFactory;
     }
 
@@ -37,7 +34,7 @@ public class NotificationService {
      * Sends notifications to a single user across all channels.
      */
     public void sendNotificationOverAllChannels(Notification notification) {
-        for(NotificationType notificationType : NotificationType.values()){
+        for (NotificationType notificationType : NotificationType.values()) {
             NotificationSender notificationSender = notificationSenderFactory.getNotificationSender(notificationType);
             notificationSender.send(notification);
         }

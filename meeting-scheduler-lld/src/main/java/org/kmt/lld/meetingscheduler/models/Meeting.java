@@ -1,6 +1,7 @@
 package org.kmt.lld.meetingscheduler.models;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -59,6 +60,8 @@ public class Meeting {
                 " id: " + id +
                 ", title: " + title +
                 ", room id: " + room.getId() +
+                ", start time: " + interval.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) +
+                ", end time: " + interval.getEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) +
                 " }";
     }
 
