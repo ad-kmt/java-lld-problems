@@ -28,8 +28,7 @@ public class NotificationService {
     /**
      * Sends a notification to a single user with the specified message.
      */
-    public void sendNotification(User user, String message, NotificationType notificationType) {
-        Notification notification = new Notification(user, message);
+    public void sendNotification(Notification notification, NotificationType notificationType) {
         NotificationSender notificationSender = notificationSenderFactory.getNotificationSender(notificationType);
         notificationSender.send(notification);
     }
@@ -37,8 +36,7 @@ public class NotificationService {
     /**
      * Sends notifications to a single user across all channels.
      */
-    public void sendNotificationOverAllChannels(User user, String message) {
-        Notification notification = new Notification(user, message);
+    public void sendNotificationOverAllChannels(Notification notification) {
         for(NotificationType notificationType : NotificationType.values()){
             NotificationSender notificationSender = notificationSenderFactory.getNotificationSender(notificationType);
             notificationSender.send(notification);

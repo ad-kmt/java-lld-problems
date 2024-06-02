@@ -5,6 +5,7 @@ import org.kmt.lld.meetingscheduler.exceptions.service.MeetingRoomCapacityLimitE
 import org.kmt.lld.meetingscheduler.exceptions.service.ParticipantNotFoundException;
 import org.kmt.lld.meetingscheduler.models.*;
 import org.kmt.lld.meetingscheduler.models.enums.InviteResponse;
+import org.kmt.lld.meetingscheduler.models.notification.Notification;
 import org.kmt.lld.meetingscheduler.repository.MeetingRepository;
 import org.kmt.lld.meetingscheduler.repository.RoomRepository;
 import org.kmt.lld.meetingscheduler.service.notification.NotificationService;
@@ -52,13 +53,10 @@ public class MeetingSchedulerService {
         // Sending notifications to all participants
         meeting.getInvites().stream()
                 .map(Invite::getParticipant)
-                .toList()
-                .forEach(
-                        user -> notificationService.sendNotificationOverAllChannels(
-                                user,
-                                String.format("You're invited to %s by %s", meeting.getTitle(), meeting.getOrganizer().getName())
-                        )
-                );
+                .map(user -> new Notification(
+                        user,
+                        String.format("You're invited to %s by %s", meeting.getTitle(), meeting.getOrganizer().getName())))
+                .forEach(notification -> notificationService.sendNotificationOverAllChannels(notification));
         log.info("Notification sent to all participants.");
         return meeting;
     }
