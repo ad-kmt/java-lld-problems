@@ -1,6 +1,6 @@
 package org.kmt.lld.meetingscheduler.service.notification.sender;
 
-import org.kmt.lld.meetingscheduler.models.notification.Notification;
+import org.kmt.lld.meetingscheduler.models.Notification;
 import org.kmt.lld.meetingscheduler.utils.Logger;
 
 /**

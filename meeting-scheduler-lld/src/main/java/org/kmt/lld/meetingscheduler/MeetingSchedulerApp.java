@@ -6,7 +6,7 @@ import org.kmt.lld.meetingscheduler.models.enums.InviteResponse;
 import org.kmt.lld.meetingscheduler.repository.MeetingRepository;
 import org.kmt.lld.meetingscheduler.repository.RoomRepository;
 import org.kmt.lld.meetingscheduler.repository.UserRepository;
-import org.kmt.lld.meetingscheduler.service.meeting.MeetingNotificationService;
+import org.kmt.lld.meetingscheduler.service.meeting.observer.MeetingNotificationService;
 import org.kmt.lld.meetingscheduler.service.meeting.MeetingRoomService;
 import org.kmt.lld.meetingscheduler.service.meeting.MeetingSchedulerService;
 import org.kmt.lld.meetingscheduler.service.meeting.strategy.FindMeetingStrategy;

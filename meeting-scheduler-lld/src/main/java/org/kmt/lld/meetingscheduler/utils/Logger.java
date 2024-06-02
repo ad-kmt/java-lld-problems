@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class Logger {
 
+    // Volatile ensures that multiple threads handle the instance variable correctly when it is being initialized
     private static Logger instance;
     private boolean debugEnabled = true; // Enable or disable debug logging
 

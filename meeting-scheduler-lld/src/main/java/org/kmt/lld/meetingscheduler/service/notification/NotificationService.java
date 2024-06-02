@@ -1,7 +1,7 @@
 package org.kmt.lld.meetingscheduler.service.notification;
 
 import org.kmt.lld.meetingscheduler.models.enums.NotificationType;
-import org.kmt.lld.meetingscheduler.models.notification.Notification;
+import org.kmt.lld.meetingscheduler.models.Notification;
 import org.kmt.lld.meetingscheduler.service.notification.sender.NotificationSender;
 import org.kmt.lld.meetingscheduler.service.notification.sender.NotificationSenderFactory;
 import org.kmt.lld.meetingscheduler.utils.Logger;

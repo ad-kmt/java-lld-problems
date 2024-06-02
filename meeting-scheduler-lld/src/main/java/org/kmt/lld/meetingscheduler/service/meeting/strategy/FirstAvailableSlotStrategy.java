@@ -25,6 +25,17 @@ public class FirstAvailableSlotStrategy implements FindMeetingStrategy {
         this.roomRepository = roomRepository;
     }
 
+    /**
+     * Finds the first available meeting slot based on the given meeting request.
+     * This method does not require synchronization because it primarily involves read operations.
+     *
+     * HANDLING CONCURRENCY
+     * - Read operations on the repository methods are generally thread-safe as they do not modify shared data.
+     * - The logic in this method involves reading the list of rooms and meetings, sorting them, and checking for available slots.
+     * - If concurrent modifications (additions or deletions of meetings/rooms) occur, they will be handled gracefully by the
+     *   underlying thread-safe collections (e.g., ConcurrentHashMap used in repositories).
+     * - Ensuring thread safety for write operations (e.g., create, update, delete meetings) is the responsibility of the repository methods.
+     */
     @Override
     public Meeting findMeeting(MeetingRequest meetingRequest) {
         List<Room> allRooms = roomRepository.getAllRooms(); // Retrieve all rooms from the repository

@@ -5,12 +5,14 @@ import org.kmt.lld.meetingscheduler.models.User;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Repository class for managing users.
  */
 public class UserRepository {
-    private final Map<String, User> users = new HashMap<>();
+    // ConcurrentHashMap ensures thread-safe access to the user data.
+    private final ConcurrentHashMap<String, User> users = new ConcurrentHashMap<>();
 
     public User create(User user) {
         users.put(user.getEmail(), user);
