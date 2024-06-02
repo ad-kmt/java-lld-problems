@@ -1,4 +1,4 @@
-package org.kmt.lld.meetingscheduler.service;
+package org.kmt.lld.meetingscheduler.service.user;
 
 import org.kmt.lld.meetingscheduler.models.User;
 import org.kmt.lld.meetingscheduler.repository.UserRepository;

@@ -12,7 +12,7 @@ import org.kmt.lld.meetingscheduler.service.meeting.MeetingSchedulerService;
 import org.kmt.lld.meetingscheduler.service.meeting.strategy.FindMeetingStrategy;
 import org.kmt.lld.meetingscheduler.service.meeting.strategy.FirstAvailableSlotStrategy;
 import org.kmt.lld.meetingscheduler.service.notification.NotificationService;
-import org.kmt.lld.meetingscheduler.service.UserService;
+import org.kmt.lld.meetingscheduler.service.user.UserService;
 import org.kmt.lld.meetingscheduler.service.notification.sender.EmailNotificationSenderImpl;
 import org.kmt.lld.meetingscheduler.service.notification.sender.NotificationSenderFactory;
 import org.kmt.lld.meetingscheduler.service.notification.sender.SmsNotificationSenderImpl;
