@@ -29,6 +29,7 @@
     <modules>
         <module>meeting-scheduler-lld</module>
         <module>parking-lot-lld</module>
+        <module>flight-booking</module>
     </modules>
 
     <properties>
